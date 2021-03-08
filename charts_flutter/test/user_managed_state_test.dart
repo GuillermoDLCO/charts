@@ -19,13 +19,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
-  testWidgets('selection can be set programmatically',
-      (WidgetTester tester) async {
-    final onTapSelection =
-        new charts.UserManagedSelectionModel<String>.fromConfig(
-            selectedDataConfig: [
-          new charts.SeriesDatumConfig<String>('Sales', '2016')
-        ]);
+  testWidgets('selection can be set programmatically', (WidgetTester tester) async {
+    final onTapSelection = new charts.UserManagedSelectionModel<String>.fromConfig(selectedDataConfig: [new charts.SeriesDatumConfig<String>('Sales', '2016')]);
 
     charts.SelectionModel<String> currentSelectionModel;
 
@@ -44,8 +39,7 @@ void main() {
     await tester.pump();
 
     expect(currentSelectionModel.selectedDatum, hasLength(1));
-    final selectedDatum =
-        currentSelectionModel.selectedDatum.first.datum as OrdinalSales;
+    final selectedDatum = currentSelectionModel.selectedDatum.first.datum as OrdinalSales;
     expect(selectedDatum.year, equals('2016'));
     expect(selectedDatum.sales, equals(100));
     expect(currentSelectionModel.selectedSeries, hasLength(1));
@@ -79,17 +73,16 @@ class TestChartState extends State<TestChart> {
     final chart = new charts.BarChart(
       seriesList,
       userManagedState: myState,
-      selectionModels: [
-        new charts.SelectionModelConfig(
-            type: charts.SelectionModelType.info,
-            changedListener: widget.selectionChangedListener)
-      ],
+      selectionModels: [new charts.SelectionModelConfig(type: charts.SelectionModelType.info, changedListener: widget.selectionChangedListener)],
       // Disable animation and gesture for testing.
       animate: false, //widget.animate,
       defaultInteractions: false,
     );
 
-    return new GestureDetector(child: chart, onTap: handleOnTap);
+    return new Directionality(
+      textDirection: TextDirection.ltr,
+      child: new GestureDetector(child: chart, onTap: handleOnTap),
+    );
   }
 
   void handleOnTap() {
